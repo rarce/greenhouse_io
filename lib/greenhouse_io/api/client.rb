@@ -32,8 +32,8 @@ module GreenhouseIo
       get_from_harvest_api "/applications#{path_id(id)}", options
     end
 
-    def scorecards(id, options = {})
-      get_from_harvest_api "/applications/#{id}/scorecards", options
+    def scorecards(id = nil, options = {})
+      get_from_harvest_api "/scorecards#{path_id(id)}", options
     end
 
     def scheduled_interviews(id, options = {})
@@ -64,8 +64,8 @@ module GreenhouseIo
       get_from_harvest_api "/sources#{path_id(id)}", options
     end
 
-    def offers(id, options = {})
-      get_from_harvest_api "/applications/#{id}/offers", options
+    def offers(id = nil, options = {})
+      get_from_harvest_api "/offers#{path_id(id)}", options
     end
 
     def rejection_reasons(id = nil, options = {})
