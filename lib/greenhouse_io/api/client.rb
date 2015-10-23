@@ -48,6 +48,10 @@ module GreenhouseIo
       get_from_harvest_api "/jobs/#{id}/stages", options
     end
 
+    def job_posts(options = {})
+      get_from_harvest_api "/job_posts", options
+    end
+
     def job_post(id, options = {})
       get_from_harvest_api "/jobs/#{id}/job_post", options
     end
@@ -58,6 +62,18 @@ module GreenhouseIo
 
     def sources(id = nil, options = {})
       get_from_harvest_api "/sources#{path_id(id)}", options
+    end
+
+    def offers(id, options = {})
+      get_from_harvest_api "/applications/#{id}/offers", options
+    end
+
+    def rejection_reasons(id = nil, options = {})
+      get_from_harvest_api "/rejection_reasons#{path_id(id)}", options
+    end
+
+    def email_templates(id = nil, options = {})
+      get_from_harvest_api "/email_templates#{path_id(id)}", options
     end
 
     def last_page?
