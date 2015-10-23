@@ -5,7 +5,7 @@ module GreenhouseIo
 
     PERMITTED_OPTIONS = [:page, :per_page]
 
-    attr_accessor :api_token, :rate_limit, :rate_limit_remaining
+    attr_accessor :api_token, :rate_limit, :rate_limit_remaining, :pagination_link
     base_uri 'https://harvest.greenhouse.io/v1'
 
     def initialize(api_token = nil)
@@ -60,6 +60,10 @@ module GreenhouseIo
       get_from_harvest_api "/sources#{path_id(id)}", options
     end
 
+    def last_page?
+      pagination_link.match(/next/).nil?
+    end
+
     private
 
     def path_id(id = nil)
@@ -73,6 +77,7 @@ module GreenhouseIo
     def get_from_harvest_api(url, options = {})
       response = get_response(url, query: permitted_options(options), basic_auth: basic_auth)
       set_rate_limits(response.headers)
+      set_pagination_link(response.headers)
       if response.code == 200
         parse_json(response)
       else
@@ -83,6 +88,10 @@ module GreenhouseIo
     def set_rate_limits(headers)
       self.rate_limit = headers['x-ratelimit-limit'].to_i
       self.rate_limit_remaining = headers['x-ratelimit-remaining'].to_i
+    end
+
+    def set_pagination_link(headers)
+      self.pagination_link = headers['Link']
     end
   end
 end
